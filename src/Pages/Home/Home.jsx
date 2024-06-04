@@ -4,6 +4,9 @@ import Banner from "./Banner/Banner";
 import ClassSection from "../../Components/ClassSection/ClassSection";
 import AboutSection from "../../Components/About Us/AboutSection";
 import Success from "../../Components/Success/Success";
+import Blogs from "./Blogs/Blogs";
+import NewsLetter from "./NewsLetter/NewsLetter";
+import Team from "./Team";
 
 const Home = () => {
   return (
@@ -29,6 +32,11 @@ const Home = () => {
         <div className="my-10 md:my-16 lg:my-20">
           <Success></Success>
         </div>
+        <section>
+          <Blogs></Blogs>
+          <Team></Team>
+          <NewsLetter></NewsLetter>
+        </section>
       </Container>
     </div>
   );

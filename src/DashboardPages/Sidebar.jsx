@@ -7,9 +7,11 @@ import MenuItem from "./Menu/MenuItem";
 import TrainerMenu from "./Menu/TrainerMenu/TrainerMenu";
 import AdminMenu from "./Menu/AdminMenu/AdminMenu";
 import UserMenu from "./Menu/UserMenu/UserMenu";
+import useRole from "../Hooks/useRole";
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
+  const [role] = useRole();
   const [isActive, setIsActive] = useState(false);
   const handleSideBar = () => {
     setIsActive(!isActive);
@@ -44,12 +46,16 @@ const Sidebar = () => {
           </div>
           <div className="flex flex-col justify-between items-center flex-1 ">
             <nav>
-             
               <MenuItem label={"DashBoard"} address={"/dashboard"}></MenuItem>
-              <MenuItem label={"Post Article"} address={"add-article"}></MenuItem>
-              <AdminMenu></AdminMenu>
-              <TrainerMenu></TrainerMenu>
-              <UserMenu></UserMenu>
+              {(role === "admin" || role === "trainer") && (
+                <MenuItem
+                  label={"Post Article"}
+                  address={"add-article"}
+                ></MenuItem>
+              )}
+              {role === "admin" && <AdminMenu></AdminMenu>}
+              {role === "trainer" && <TrainerMenu></TrainerMenu>}
+              {role === "member" && <UserMenu></UserMenu>}
               <MenuItem label={"Back to Home"} address={"/"}></MenuItem>
             </nav>
           </div>

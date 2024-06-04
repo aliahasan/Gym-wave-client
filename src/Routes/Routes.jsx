@@ -22,6 +22,7 @@ import Activity from "../DashboardPages/Menu/UserMenu/Activity";
 import Recommended from "../DashboardPages/Menu/UserMenu/Recommended";
 import Profile from "../DashboardPages/Menu/UserMenu/Profile";
 import AddArticles from "../DashboardPages/AddArticles/AddArticles";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -69,7 +70,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <DashBard></DashBard>,
+        element: (
+          <PrivateRoute>
+            <DashBard></DashBard>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "all-subscribers",

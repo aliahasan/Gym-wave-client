@@ -9,10 +9,11 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from || "/";
-  const { signInWithGoogle, signIn, loading, resetPassword, setLoading } =
+  const { signInWithGoogle, signIn, loading, resetPassword, setLoading, user } =
     useAuth();
-  const [email, setEmail] = useState("");
+    console.log(user);
 
+  const [email, setEmail] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -21,6 +22,7 @@ const Login = () => {
     try {
       setLoading(true);
       await signIn(email, password);
+
       navigate(from);
       toast.success("Login Successful");
     } catch (error) {

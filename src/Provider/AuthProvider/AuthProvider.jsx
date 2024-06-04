@@ -80,6 +80,21 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const saveUser = async (user) => {
+    const currentUser = {
+      name: user.displayName,
+      email: user.email,
+      image: user.photoURL,
+      role: "member",
+      status: "verified",
+    };
+    const { data } = await axios.put(
+      `${import.meta.env.VITE_API_URL}/users`,
+      currentUser
+    );
+    return data;
+  };
+
   const logout = async () => {
     setLoading(true);
     await signOut(auth);
@@ -97,6 +112,7 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       if (currentUser) {
         getToken(currentUser?.email);
+        saveUser(currentUser);
       }
       setLoading(false);
     });
