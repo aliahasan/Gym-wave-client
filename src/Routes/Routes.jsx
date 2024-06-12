@@ -23,6 +23,7 @@ import Recommended from "../DashboardPages/Menu/UserMenu/Recommended";
 import Profile from "../DashboardPages/Menu/UserMenu/Profile";
 import AddArticles from "../DashboardPages/AddArticles/AddArticles";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import TrainerDetails from "../Pages/Trainers/TrainerDetails";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "/trainers",
         element: <Trainers></Trainers>,
+      },
+      {
+        path: "/trainers/:id",
+        element: <TrainerDetails />,
       },
       {
         path: "/community",

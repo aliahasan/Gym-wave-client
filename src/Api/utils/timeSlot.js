@@ -5,12 +5,12 @@ export const generateTimeSlots = (start, end) => {
   let startTime = parse(start, "HH:mm", new Date());
   const endTime = parse(end, "HH:mm", new Date());
 
-  while (startTime < endTime) {
-    const nextTime = addHours(startTime, 1);
+  for (let currentTime = startTime; currentTime < endTime; ) {
+    const nextTime = addHours(currentTime, 1);
     slots.push(
-      `${format(startTime, "h:mm a")} - ${format(nextTime, "h:mm a")}`
+      `${format(currentTime, "h:mm a")} - ${format(nextTime, "h:mm a")}`
     );
-    startTime = nextTime;
+    currentTime = nextTime;
   }
 
   return slots;

@@ -1,75 +1,65 @@
-import React, { useState } from 'react';
-import './TrainerForm.css'; // Import CSS for styling
-import { generateTimeSlots } from '../../Api/utils/timeSlot';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Link, useParams } from "react-router-dom";
+import Loading from "../../Shared/Loading/Loading";
+import { fetchTrainerDetails } from "../../Api/Api";
+import Container from "../../Components/Container/Container";
 
 const TrainerDetails = () => {
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
-  const [slots, setSlots] = useState([]);
+  const { id } = useParams();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const generatedSlots = generateTimeSlots(start, end);
-    setSlots(generatedSlots);
-    console.log(slots)
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["trainerDetails", id],
+    queryFn: () => fetchTrainerDetails(id),
+  });
 
-    // const response = await fetch('http://localhost:5000/trainers', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ start, end, slots: generatedSlots })
-    // });
+  if (isLoading) return <Loading />;
 
-    // if (response.ok) {
-    //   alert('Trainer time slots saved successfully');
-    // } else {
-    //   alert('Failed to save trainer time slots');
-    // }
-
-
-  };
-
-  const hadleSlot =(slot) => {
-    console.log(slot)
-  }
-
+  if (error) return <div>Error: {error.message}</div>;
+  console.log(data);
   return (
-    <div className="trainer-form">
-      <h2>Create Trainer Time Slots</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Start Time:
-          <input
-            type="time"
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          End Time:
-          <input
-            type="time"
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-            required
-          />
-        </label>
-        <button type="submit">Generate and Post Time Slots</button>
-      </form>
-      {slots.length > 0 && (
-        <div className="available-slots">
-          <h3>Generated Slots:</h3>
-          <div className="slots-grid">
-            {slots.map((slot, index) => (
-              <div key={index} className="slot" onClick={() => hadleSlot(slot)}>
-                {slot}
+    <div>
+      <Container>
+        <div className="grid grid-cols-1  md:grid-cols-2 ">
+          <div className="">
+            <img src={data.image_url} alt={data.name} />
+            <div className="md:pr-10 text-justify my-6">
+              <p>Description: {data.description}</p>
+            </div>
+          </div>
+          <div>
+            <div className="bg-gray-100 px-4 p-10">
+              <div className="text-center">
+                <p className="text-center text-3xl py-2">{data.name}</p>
               </div>
-            ))}
+              <p className="text-xl">Skills : {data.skills.join(", ")}</p>
+              <p className="my-4 text-2xl">Experience of : {data.experience}</p>
+              <p>Available Time slot : </p>
+              <div className="grid grid-cols-3   gap-2 pb">
+                {data?.availableInDay.map((slot, index) => (
+                  <p
+                    key={index}
+                    className="my-2 gap-y-3 px-2 py-4 text-center bg-gray-300 cursor-pointer"
+                  >
+                    {slot}
+                  </p>
+                ))}
+              </div>
+
+              <span className="font-bold ">Click your favorite time slot to booked  a trainer  </span>
+
+            </div>
+            <div className="text-center my-5 bg-green-300 py-6">
+              <p>Want to be a professional Trainer ?</p>
+              <div>
+                <Link to={"/betrainer"}>
+                  <button className="btn">Become a trainer</button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </Container>
     </div>
   );
 };
