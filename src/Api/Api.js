@@ -1,6 +1,5 @@
-import { reauthenticateWithCredential } from "firebase/auth";
 import { axiosCommon } from "../Hooks/useAxiosCommon";
-import { axiosSecure } from "../Hooks/useAxiosSecure";
+import useAxiosSecure, { axiosSecure } from "../Hooks/useAxiosSecure";
 
 export const subscribe = async (info) => {
   const { data } = await axiosCommon.post("/subscribers", info);
@@ -27,5 +26,15 @@ export const allTrainers = async () => {
 
 export const fetchTrainerDetails = async (id) => {
   const response = await axiosSecure.get(`/trainers/${id}`);
+  return response.data;
+};
+
+export const getClasses = async () => {
+  const { data } = await axiosCommon.get("/classes");
+  return data;
+};
+
+export const fetchClassDetails = async (id) => {
+  const response = await axiosSecure.get(`/classes/${id}`);
   return response.data;
 };

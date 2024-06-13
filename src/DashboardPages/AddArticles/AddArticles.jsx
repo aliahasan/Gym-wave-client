@@ -49,8 +49,9 @@ const AddArticles = () => {
       await mutateAsync(article);
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      toast.error(error.message)
     }
+    setLoading(false)
     form.reset();
   };
 

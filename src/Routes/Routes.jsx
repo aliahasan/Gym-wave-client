@@ -24,6 +24,10 @@ import Profile from "../DashboardPages/Menu/UserMenu/Profile";
 import AddArticles from "../DashboardPages/AddArticles/AddArticles";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import TrainerDetails from "../Pages/Trainers/TrainerDetails";
+import Booking from "../Pages/Booking/Booking";
+import Payment from "../Pages/Payment/Payment";
+import { BookingProvider } from "../Provider/BookingProvider/BookingProvider";
+import ClassDetails from "../Pages/Classes/ClassDetails";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +44,10 @@ export const router = createBrowserRouter([
         element: <Classes></Classes>,
       },
       {
+        path: "/classes/:id",
+        element: <ClassDetails></ClassDetails>,
+      },
+      {
         path: "/gallery",
         element: <Gallery></Gallery>,
       },
@@ -49,15 +57,33 @@ export const router = createBrowserRouter([
       },
       {
         path: "/trainers/:id",
-        element: <TrainerDetails />,
+        element: (
+          <BookingProvider>
+            <TrainerDetails />,
+          </BookingProvider>
+        ),
       },
       {
         path: "/community",
         element: <Community></Community>,
       },
       {
-        path: "/betrainer",
+        path: "/trainers/betrainer",
         element: <BeTrainerForm></BeTrainerForm>,
+      },
+      {
+        path: "/trainers/booking",
+        element: (
+          <PrivateRoute>
+            <BookingProvider>
+              <Booking></Booking>
+            </BookingProvider>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment",
+        element: <Payment></Payment>,
       },
     ],
   },

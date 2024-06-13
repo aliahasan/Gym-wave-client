@@ -94,7 +94,7 @@ const BeTrainerForm = () => {
                   id="name"
                   placeholder="your name"
                   required
-                  // defaultValue={user?.displayName}
+                  defaultValue={user?.displayName}
                 />
               </div>
             </div>
@@ -108,8 +108,8 @@ const BeTrainerForm = () => {
                   type="email"
                   name="email"
                   id="email"
-                  // defaultValue={user?.email}
-                  // readOnly
+                  defaultValue={user?.email}
+                  readOnly
                   required
                 />
               </div>

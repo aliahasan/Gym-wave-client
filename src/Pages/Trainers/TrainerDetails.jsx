@@ -1,12 +1,13 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Loading from "../../Shared/Loading/Loading";
 import { fetchTrainerDetails } from "../../Api/Api";
 import Container from "../../Components/Container/Container";
 
 const TrainerDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["trainerDetails", id],
@@ -16,7 +17,13 @@ const TrainerDetails = () => {
   if (isLoading) return <Loading />;
 
   if (error) return <div>Error: {error.message}</div>;
-  console.log(data);
+
+  const handleSlotClick = (slot) => {
+    navigate(`/trainers/booking`, {
+      state: { slot, trainerId: id, trainerName: data.name },
+    });
+  };
+
   return (
     <div>
       <Container>
@@ -35,24 +42,27 @@ const TrainerDetails = () => {
               <p className="text-xl">Skills : {data.skills.join(", ")}</p>
               <p className="my-4 text-2xl">Experience of : {data.experience}</p>
               <p>Available Time slot : </p>
-              <div className="grid grid-cols-3   gap-2 pb">
+              <div className="grid grid-cols-3 gap-2 pb">
                 {data?.availableInDay.map((slot, index) => (
-                  <p
+                  <button
                     key={index}
+                    onClick={() => handleSlotClick(slot)}
                     className="my-2 gap-y-3 px-2 py-4 text-center bg-gray-300 cursor-pointer"
                   >
                     {slot}
-                  </p>
+                  </button>
                 ))}
               </div>
 
-              <span className="font-bold ">Click your favorite time slot to booked  a trainer  </span>
-
+              <span className="font-bold ">
+                Click your favorite time slot to book a trainer{" "}
+              </span>
+              <div>social icons here---------</div>
             </div>
             <div className="text-center my-5 bg-green-300 py-6">
-              <p>Want to be a professional Trainer ?</p>
+              <p>Want to be a professional Trainer?</p>
               <div>
-                <Link to={"/betrainer"}>
+                <Link to={"/trainers/betrainer"}>
                   <button className="btn">Become a trainer</button>
                 </Link>
               </div>
