@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Loading from "../../Shared/Loading/Loading";
 import useRole from "../../Hooks/useRole";
 const AdminRoute = ({ children }) => {
-  const [role, isLoading] = useRole();
+  const {role, isLoading} = useRole();
 
   if (isLoading) return <Loading></Loading>;
   if (role === "admin") return children;

@@ -4,13 +4,14 @@ import Container from "../Container/Container";
 import { PiSpinnerBold } from "react-icons/pi";
 import { imageUpload } from "../../Api/utils/imagebb";
 import { generateTimeSlots } from "../../Api/utils/timeSlot";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import {  beTrainer } from "../../Api/Api";
+import { beTrainer } from "../../Api/Api";
 import toast from "react-hot-toast";
+import useRole from "../../Hooks/useRole";
 
 const BeTrainerForm = () => {
   const { loading, user, setLoading } = useAuth();
+  const { userId } = useRole();
+  console.log(userId);
   const [skills, setSkills] = useState([]);
   const [start, setStart] = useState("");
   const [weekDay, setWeekDay] = useState("");
@@ -42,7 +43,7 @@ const BeTrainerForm = () => {
     const email = form.email.value;
     const age = form.age.value;
     const image = form.image.files[0];
-    const availableInDay = await generateTimeSlots(start, end);
+    const availableInDay = generateTimeSlots(start, end);
     const experience = form.experience.value;
     const description = form.description.value;
 
@@ -58,13 +59,12 @@ const BeTrainerForm = () => {
         availableInDay,
         experience,
         description,
+        userId: userId,
       };
-      console.log(trainerInfo);
       await beTrainer(trainerInfo);
-      toast.success("application submitted successfully")
     } catch (error) {
       console.log(error);
-      toast.error(error.message)
+      toast.error(error.message);
       setLoading(false);
     }
     setLoading(false);

@@ -8,7 +8,7 @@ import { axiosSecure } from "../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 
 const AddArticles = () => {
-  const [role] = useRole();
+  const {role} = useRole();
   const { user, loading, setLoading } = useAuth();
 
   const { mutateAsync } = useMutation({

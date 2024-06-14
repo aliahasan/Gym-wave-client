@@ -11,7 +11,7 @@ import useRole from "../Hooks/useRole";
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
-  const [role] = useRole();
+  const {role} = useRole();
   const [isActive, setIsActive] = useState(false);
   const handleSideBar = () => {
     setIsActive(!isActive);

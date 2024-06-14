@@ -20,7 +20,6 @@ export const postBlog = async (article) => {
 
 export const beTrainer = async (trainerInfo) => {
   const { data } = await axiosSecure.post("/applied-trainers", trainerInfo);
-  console.log(data);
   return data;
 };
 
@@ -66,4 +65,14 @@ export const payments = async (paymentInfo) => {
 export const getTrainerData = async (email) => {
   const { data } = await axiosSecure.get(`/users/${email}`);
   return data?.availableInDay;
+};
+
+export const getAppliedTrainers = async () => {
+  const { data } = await axiosSecure.get("/applied-trainers");
+  return data;
+};
+
+export const updateUser = async (id) => {
+  const { data } = await axiosSecure.post(`/update/user/${id}`);
+  return data;
 };

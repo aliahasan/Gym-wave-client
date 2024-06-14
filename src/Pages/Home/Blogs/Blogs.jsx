@@ -2,7 +2,7 @@ import React from "react";
 import useRole from "../../../Hooks/useRole";
 
 const Blogs = () => {
-  const [role] = useRole();
+  const {role} = useRole();
   return <div></div>;
 };
 
