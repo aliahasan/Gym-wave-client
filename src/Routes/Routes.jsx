@@ -27,6 +27,8 @@ import TrainerDetails from "../Pages/Trainers/TrainerDetails";
 import Booking from "../Pages/Booking/Booking";
 import Payment from "../Pages/Payment/Payment";
 import ClassDetails from "../Pages/Classes/ClassDetails";
+import AdminRoute from "./AdminRoute/AdminRoute";
+import TrainerRoute from "./TrainerRoute/TrainerRoute";
 
 export const router = createBrowserRouter([
   {
@@ -64,7 +66,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/trainers/betrainer",
-        element: <BeTrainerForm></BeTrainerForm>,
+        element: (
+          <PrivateRoute>
+            <BeTrainerForm></BeTrainerForm>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/trainers/booking",
@@ -76,7 +82,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/payment",
-        element: <Payment></Payment>,
+        element: (
+          <PrivateRoute>
+            <Payment></Payment>,
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -90,7 +100,9 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashBoardLayout></DashBoardLayout>,
+    element: <PrivateRoute>
+      <DashBoardLayout></DashBoardLayout>,
+    </PrivateRoute>,
     children: [
       {
         index: true,
@@ -102,47 +114,105 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-subscribers",
-        element: <AllSubscribers></AllSubscribers>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllSubscribers></AllSubscribers>,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "all-trainers",
-        element: <AllTrainers></AllTrainers>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllTrainers></AllTrainers>,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "applied-trainers",
-        element: <AppliedTrainers></AppliedTrainers>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AppliedTrainers></AppliedTrainers>,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "balance",
-        element: <Balance></Balance>,
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <Balance></Balance>,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-article",
-        element: <AddArticles></AddArticles>,
+        element: (
+          <PrivateRoute>
+            <AddArticles></AddArticles>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "add-class",
-        element: <AddClass></AddClass>,
+        element: (
+          <PrivateRoute>
+            <TrainerRoute>
+              <AddClass></AddClass>,
+            </TrainerRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-members",
-        element: <ManageMembers></ManageMembers>,
+        element: (
+          <PrivateRoute>
+            <TrainerRoute>
+              <ManageMembers></ManageMembers>,
+            </TrainerRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-slots",
-        element: <ManageSlots></ManageSlots>,
+        element: (
+          <PrivateRoute>
+            <TrainerRoute>
+              <ManageSlots></ManageSlots>,
+            </TrainerRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "activities",
-        element: <Activity></Activity>,
+        element: (
+          <PrivateRoute>
+            <Activity></Activity>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "recommended-class",
-        element: <Recommended></Recommended>,
+        element: (
+          <PrivateRoute>
+            <Recommended></Recommended>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "profile",
-        element: <Profile></Profile>,
+        element: (
+          <PrivateRoute>
+            <Profile></Profile>,
+          </PrivateRoute>
+        ),
       },
     ],
   },

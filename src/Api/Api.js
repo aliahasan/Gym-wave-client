@@ -51,7 +51,19 @@ export const bookings = async (bookingInfo) => {
   return response.data;
 };
 
+// get booking data for trainers
+export const getBookedSlot = async (email) => {
+  const { data } = await axiosSecure.get(`/bookings/trainers?email=${email}`);
+  return data;
+};
+
 export const payments = async (paymentInfo) => {
   const response = await axiosSecure.post("/payments", paymentInfo);
   return response.data;
+};
+
+// get all the slots
+export const getTrainerData = async (email) => {
+  const { data } = await axiosSecure.get(`/users/${email}`);
+  return data?.availableInDay;
 };

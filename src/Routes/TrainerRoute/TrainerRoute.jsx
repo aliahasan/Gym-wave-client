@@ -11,5 +11,5 @@ const TrainerRoute = ({ children }) => {
 };
 export default TrainerRoute;
 TrainerRoute.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.node,
 };

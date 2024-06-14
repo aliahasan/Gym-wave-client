@@ -13,5 +13,5 @@ const AdminRoute = ({ children }) => {
 export default AdminRoute;
 
 AdminRoute.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
