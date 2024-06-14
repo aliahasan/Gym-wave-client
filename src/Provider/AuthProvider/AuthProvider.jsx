@@ -96,6 +96,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     await signOut(auth);
+    localStorage.removeItem("bookingData")
     try {
       await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
         withCredentials: true,

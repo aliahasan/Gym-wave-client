@@ -1,3 +1,4 @@
+import React from "react";
 import useRole from "../../Hooks/useRole";
 import useAuth from "../../Hooks/useAuth";
 import AddArticlesForm from "./AddArticlesForm";
@@ -14,6 +15,11 @@ const AddArticles = () => {
     mutationFn: async (article) => {
       const { data } = await axiosSecure.post("/articles", article);
       return data;
+    },
+    onError: (error) => {
+      console.error("Error adding article:", error);
+      toast.error("Failed to add article");
+      setLoading(false);
     },
     onSuccess: () => {
       toast.success("Article added successfully");
@@ -47,20 +53,17 @@ const AddArticles = () => {
         author,
       };
       await mutateAsync(article);
+      form.reset();
     } catch (error) {
-      console.log(error);
-      toast.error(error.message)
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image");
     }
-    setLoading(false)
-    form.reset();
+    setLoading(false);
   };
 
   return (
     <div>
-      <AddArticlesForm
-        handleSubmit={handleSubmit}
-        loading={loading}
-      ></AddArticlesForm>
+      <AddArticlesForm handleSubmit={handleSubmit} loading={loading} />
     </div>
   );
 };

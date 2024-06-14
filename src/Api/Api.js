@@ -1,5 +1,5 @@
 import { axiosCommon } from "../Hooks/useAxiosCommon";
-import useAxiosSecure, { axiosSecure } from "../Hooks/useAxiosSecure";
+import { axiosSecure } from "../Hooks/useAxiosSecure";
 
 export const subscribe = async (info) => {
   const { data } = await axiosCommon.post("/subscribers", info);
@@ -36,5 +36,15 @@ export const getClasses = async () => {
 
 export const fetchClassDetails = async (id) => {
   const response = await axiosSecure.get(`/classes/${id}`);
+  return response.data;
+};
+
+export const bookings = async (bookingInfo) => {
+  const response = await axiosSecure.post("/bookings", bookingInfo);
+  return response.data;
+};
+
+export const payments = async (paymentInfo) => {
+  const response = await axiosSecure.post("/payments", paymentInfo);
   return response.data;
 };

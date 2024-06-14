@@ -1,0 +1,10 @@
+.plan {
+  background-color: tomato;
+  border: 2px solid;
+}
+.plan h3 {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+}

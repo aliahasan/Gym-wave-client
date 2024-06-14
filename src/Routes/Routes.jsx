@@ -26,7 +26,6 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import TrainerDetails from "../Pages/Trainers/TrainerDetails";
 import Booking from "../Pages/Booking/Booking";
 import Payment from "../Pages/Payment/Payment";
-import { BookingProvider } from "../Provider/BookingProvider/BookingProvider";
 import ClassDetails from "../Pages/Classes/ClassDetails";
 
 export const router = createBrowserRouter([
@@ -57,11 +56,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/trainers/:id",
-        element: (
-          <BookingProvider>
-            <TrainerDetails />,
-          </BookingProvider>
-        ),
+        element: <TrainerDetails />,
       },
       {
         path: "/community",
@@ -75,9 +70,7 @@ export const router = createBrowserRouter([
         path: "/trainers/booking",
         element: (
           <PrivateRoute>
-            <BookingProvider>
-              <Booking></Booking>
-            </BookingProvider>
+            <Booking></Booking>
           </PrivateRoute>
         ),
       },

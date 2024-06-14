@@ -12,8 +12,9 @@ const AddClass = () => {
   const { user, setLoading } = useAuth();
 
   const handleChange = (event) => {
-    setClassCategory(event.target.value);
+    event.preventDefault()
     setClassType(event.target.value);
+    setClassCategory(event.target.value);
   };
 
   const classMutation = useMutation({

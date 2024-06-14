@@ -3,22 +3,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const TrainerCard = ({ trainer }) => {
-  console.log(trainer);
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
-      <figure>
-        <img src={trainer?.image_url} alt="Shoes" />
+    <div className="card w-96 bg-base-100 shadow-xl rounded-lg overflow-hidden">
+      <figure className="overflow-hidden">
+        <img
+          src={trainer?.image_url}
+          alt={trainer?.name}
+          className="object-cover w-full h-auto transform transition-transform duration-500 hover:scale-105"
+        />
       </figure>
-      <div className="card-body">
-        <h2 className="card-title">{trainer?.name}</h2>
-        <p>Experiences of {trainer?.experience}</p>
+      <div className="card-body p-4">
+        <h2 className="text-xl font-bold mb-2">{trainer?.name}</h2>
+        <p className="text-gray-700 mb-4">
+          Experience of {trainer?.experience} years
+        </p>
         <Link
           to={`/trainers/${trainer._id}`}
-          className="w-full text-center bg-red-400 py-2 rounded-sm text-white"
+          className="block w-full text-center"
         >
-          <div>
-            <button>Read more...</button>
-          </div>
+          <button className="py-2 w-full bg-red-400 text-white rounded-md hover:bg-red-500 transition-colors duration-300">
+            Read more...
+          </button>
         </Link>
       </div>
     </div>

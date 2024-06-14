@@ -1,14 +1,19 @@
 /* eslint-disable react/prop-types */
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 
 export const BookingContext = createContext();
 
-export const BookingProvider = ({ children }) => {
-  const [bookingData, setBookingData] = useState({
-    slot: '',
-    trainerId: '',
-    trainerName: '',
+const BookingProvider = ({ children }) => {
+  const [bookingData, setBookingData] = useState(() => {
+    // Load initial state from localStorage if available
+    const savedBookingData = localStorage.getItem("bookingData");
+    return savedBookingData ? JSON.parse(savedBookingData) : {};
   });
+
+  useEffect(() => {
+    // Save bookingData to localStorage whenever it changes
+    localStorage.setItem("bookingData", JSON.stringify(bookingData));
+  }, [bookingData]);
 
   return (
     <BookingContext.Provider value={{ bookingData, setBookingData }}>
@@ -16,3 +21,5 @@ export const BookingProvider = ({ children }) => {
     </BookingContext.Provider>
   );
 };
+
+export default BookingProvider;

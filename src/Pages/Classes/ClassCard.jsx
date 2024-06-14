@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ClassCard = ({ classItem }) => {
-  console.log(classItem);
   return (
     <div className="card w-96 bg-base-100 shadow-md rounded-sm overflow-hidden">
       <figure className="overflow-hidden">

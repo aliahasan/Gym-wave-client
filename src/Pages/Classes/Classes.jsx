@@ -18,7 +18,6 @@ const Classes = () => {
   if (isLoading) return <Loading></Loading>;
   if (error) return <div>Error loading classes</div>;
 
-  console.log(classes);
 
   return (
     <div>

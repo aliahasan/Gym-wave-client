@@ -38,7 +38,6 @@ const AddArticlesForm = ({ handleSubmit, loading }) => {
                   className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
                   type="file"
                   name="image"
-                  // onChange={(e) => handleImage(e.target.files[0])}
                   id="image"
                   accept="image/*"
                   required
