@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { subscribe } from "../../../Api/Api";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import { PiSpinnerBold } from "react-icons/pi";
+import { subscribers } from "../../../Api/Api";
 
 const NewsLetter = () => {
   const { loading } = useAuth();
@@ -15,7 +15,7 @@ const NewsLetter = () => {
     const email = form.email.value;
     const info = { name, email };
     try {
-      const response = await subscribe(info);
+      const response = await subscribers(info);
       if (response.insertedId) {
         toast.success("Thank you for staying with us 🤗");
       }

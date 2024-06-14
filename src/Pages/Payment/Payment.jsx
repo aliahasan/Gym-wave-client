@@ -21,12 +21,12 @@ const Payment = () => {
           <h1 className="text-4xl">Payment For Booking</h1>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center gap-3 lg:mt-20">
-          <div className="w-1/2 text-2xl">
+          <div className="md:w-1/2 text-2xl">
             <p>Your booking slot : {bookingData?.slot}</p>
-            <p>Package name : {bookingData?.packageName}</p>
+            <p className="">Package type : {bookingData?.packageName}</p>
             <p>price : {bookingData?.price}</p>
           </div>
-          <div className="w-1/2">
+          <div className="md:w-1/2 mx-auto">
             <Elements stripe={stripePromise}>
               <CheckOutForm bookingData={bookingData}></CheckOutForm>
             </Elements>

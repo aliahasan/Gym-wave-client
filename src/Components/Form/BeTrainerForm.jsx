@@ -4,26 +4,17 @@ import Container from "../Container/Container";
 import { PiSpinnerBold } from "react-icons/pi";
 import { imageUpload } from "../../Api/utils/imagebb";
 import { generateTimeSlots } from "../../Api/utils/timeSlot";
-import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { BeTrainer } from "../../Api/Api";
+import {  beTrainer } from "../../Api/Api";
+import toast from "react-hot-toast";
 
 const BeTrainerForm = () => {
   const { loading, user, setLoading } = useAuth();
   const [skills, setSkills] = useState([]);
   const [start, setStart] = useState("");
+  const [weekDay, setWeekDay] = useState("");
   const [end, setEnd] = useState("");
-
-  const [dates, setDates] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection",
-  });
-
-  const handleDates = (item) => {
-    setDates(item.selection);
-  };
 
   const handleSkills = (e) => {
     const { value, checked } = e.target;
@@ -31,6 +22,15 @@ const BeTrainerForm = () => {
       setSkills([...skills, value]);
     } else {
       setSkills(skills.filter((skill) => skill !== value));
+    }
+  };
+
+  const handleDay = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setWeekDay([...weekDay, value]);
+    } else {
+      setWeekDay(weekDay.filter((day) => day !== value));
     }
   };
 
@@ -45,8 +45,6 @@ const BeTrainerForm = () => {
     const availableInDay = await generateTimeSlots(start, end);
     const experience = form.experience.value;
     const description = form.description.value;
-    const availableWeakFrom = dates.startDate;
-    const availableInWeakTo = dates.endDate;
 
     try {
       const image_url = await imageUpload(image);
@@ -56,19 +54,20 @@ const BeTrainerForm = () => {
         age,
         image_url,
         skills,
+        weekDay,
         availableInDay,
-        availableWeakFrom,
-        availableInWeakTo,
         experience,
         description,
       };
       console.log(trainerInfo);
-      await BeTrainer(trainerInfo);
+      await beTrainer(trainerInfo);
+      toast.success("application submitted successfully")
     } catch (error) {
       console.log(error);
+      toast.error(error.message)
       setLoading(false);
     }
-    setLoading(false)
+    setLoading(false);
     form.reset();
   };
 
@@ -94,6 +93,7 @@ const BeTrainerForm = () => {
                   id="name"
                   placeholder="your name"
                   required
+                  readOnly
                   defaultValue={user?.displayName}
                 />
               </div>
@@ -143,76 +143,59 @@ const BeTrainerForm = () => {
                 />
               </div>
             </div>
-
-            <div className="space-y-1">
-              <label htmlFor="location" className="block text-gray-600">
-                Select Availability in weak
-              </label>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <DateRange
-                  rangeColors={["#F43F5E"]}
-                  editableDateInputs={true}
-                  onChange={(item) => handleDates(item)}
-                  moveRangeOnFirstSelection={false}
-                  ranges={[dates]}
-                  minDate={new Date()}
+            <div className="space-y-6">
+              <div className="space-y-1 text-sm">
+                <label htmlFor="slots" className="block text-gray-500">
+                  Available From
+                </label>
+                <input
+                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
+                  type="time"
+                  name="time"
+                  id="time"
+                  value={start}
+                  onChange={(e) => setStart(e.target.value)}
+                  required
                 />
               </div>
             </div>
-            <div className="flex flex-col justify-center gap-y-10">
-              <div className="space-y-6">
-                <div className="space-y-1 text-sm">
-                  <label htmlFor="slots" className="block text-gray-500">
-                    Available From
-                  </label>
-                  <input
-                    className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                    type="time"
-                    name="time"
-                    id="time"
-                    value={start}
-                    onChange={(e) => setStart(e.target.value)}
-                    required
-                  />
-                </div>
+            <div className="space-y-6">
+              <div className="space-y-1 text-sm">
+                <label htmlFor="slots" className="block text-gray-500">
+                  Available To
+                </label>
+                <input
+                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
+                  type="time"
+                  name="time"
+                  id="time"
+                  value={end}
+                  onChange={(e) => setEnd(e.target.value)}
+                  required
+                />
               </div>
-              <div className="space-y-6">
-                <div className="space-y-1 text-sm">
-                  <label htmlFor="slots" className="block text-gray-500">
-                    Available To
-                  </label>
-                  <input
-                    className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                    type="time"
-                    name="time"
-                    id="time"
-                    value={end}
-                    onChange={(e) => setEnd(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="space-y-6">
-                <div className="space-y-1 text-sm">
-                  <label htmlFor="slots" className="block text-gray-500">
-                   Experiences
-                  </label>
-                  <input
-                    className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                    type="text"
-                    name="experience"
-                    id="experience"
-                    required
-                  />
-                </div>
+            </div>
+            <div className="space-y-6">
+              <div className="space-y-1 text-sm">
+                <label htmlFor="slots" className="block text-gray-500">
+                  Experiences
+                </label>
+                <input
+                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
+                  type="text"
+                  name="experience"
+                  id="experience"
+                  required
+                />
               </div>
             </div>
           </div>
-          <div className="space-y-1 text-sm w-full">
+          <div className="space-y-1 text-sm w-full py-4">
             <label htmlFor="description" className="block text-gray-600">
               Select your skill
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between  px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md my-10">
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between  px-4 py-3 text-gray-700 border border-rose-300 gap-y-3 focus:outline-rose-500 rounded-md my-10">
               <label className="inline-flex items-center">
                 <input
                   type="checkbox"
@@ -273,6 +256,84 @@ const BeTrainerForm = () => {
                   onChange={handleSkills}
                 />
                 <span className="ml-2">Group Training</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="description" className="block text-gray-600">
+              Availability in week
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-between  px-4 py-3 text-gray-700 border border-rose-300 gap-y-3 focus:outline-rose-500 rounded-md my-2">
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Saturday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Saturday</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Sunday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Sunday</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Monday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Monday</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Tuesday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Tuesday</span>
+              </label>
+
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Wednesday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Wednesday</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Thursday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Thursday</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox text-blue-600"
+                  name="weekDay"
+                  value="Friday"
+                  onChange={handleDay}
+                />
+                <span className="ml-2">Friday</span>
               </label>
             </div>
           </div>

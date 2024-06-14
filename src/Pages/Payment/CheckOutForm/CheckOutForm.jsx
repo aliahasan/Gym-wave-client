@@ -9,9 +9,8 @@ import { bookings, payments } from "../../../Api/Api";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-
 const CheckOutForm = ({ bookingData }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { loading, user } = useAuth();
   const [cardError, setCardError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
@@ -95,7 +94,7 @@ const CheckOutForm = ({ bookingData }) => {
           text: text,
           icon: "success",
         });
-        navigate("/")
+        navigate("/");
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -107,7 +106,9 @@ const CheckOutForm = ({ bookingData }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} >
+     <div className="flex flex-col ">
+     <div>
       <CardElement
         options={{
           style: {
@@ -124,14 +125,18 @@ const CheckOutForm = ({ bookingData }) => {
           },
         }}
       />
-      <button
-        className="btn btn-primary"
-        type="submit"
-        disabled={!stripe || loading || !clientSecret || processing}
-      >
-        Pay
-      </button>
+      </div>
+      <div className="">
+        <button
+          className="px-8 py-2 bg-red-400"
+          type="submit"
+          disabled={!stripe || loading || !clientSecret || processing}
+        >
+          Pay
+        </button>
+      </div>
       {cardError && <div className="card-error">{cardError}</div>}
+     </div>
     </form>
   );
 };
