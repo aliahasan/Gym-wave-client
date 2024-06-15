@@ -10,7 +10,7 @@ import useRole from "../../Hooks/useRole";
 
 const BeTrainerForm = () => {
   const { loading, user, setLoading } = useAuth();
-  const { userId } = useRole();
+  const { userId , role } = useRole();
   console.log(userId);
   const [skills, setSkills] = useState([]);
   const [start, setStart] = useState("");
@@ -60,6 +60,7 @@ const BeTrainerForm = () => {
         experience,
         description,
         userId: userId,
+        role:role
       };
       await beTrainer(trainerInfo);
     } catch (error) {
