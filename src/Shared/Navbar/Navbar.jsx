@@ -1,5 +1,3 @@
-
-
 import { Link, NavLink } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
 import { FaBars } from "react-icons/fa";

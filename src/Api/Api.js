@@ -3,18 +3,15 @@ import { axiosSecure } from "../Hooks/useAxiosSecure";
 
 export const subscribers = async (info) => {
   const { data } = await axiosCommon.post("/subscribers", info);
-  console.log(data);
   return data;
 };
 export const getSubscribers = async () => {
   const { data } = await axiosSecure.get("/subscribers");
-  console.log(data);
   return data;
 };
 
 export const postBlog = async (article) => {
   const { data } = await axiosSecure.post("articles/", article);
-  console.log(data);
   return data;
 };
 
@@ -26,7 +23,6 @@ export const beTrainer = async (trainerInfo) => {
 // get all trainer for admin
 export const allTrainers = async () => {
   const { data } = await axiosSecure.get("/trainers");
-  console.log(data);
   return data;
 };
 

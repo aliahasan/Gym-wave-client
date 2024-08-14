@@ -7,11 +7,13 @@ import Success from "../../Components/Success/Success";
 import Blogs from "./Blogs/Blogs";
 import NewsLetter from "./NewsLetter/NewsLetter";
 import Team from "./Team";
+import Features from "./Features";
 
 const Home = () => {
   return (
     <div>
       <Banner></Banner>
+      <Features></Features>
       <div className="bg-[#191919]">
         <Container>
           <ClassSection></ClassSection>

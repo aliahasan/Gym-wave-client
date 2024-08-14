@@ -1,7 +1,6 @@
 .clipped-element {
   overflow: hidden;
   clip-path: polygon(26% 13%, 48% 49%, 24% 84%, 0 84%, 23% 48%, 0 13%);
-  /* clip-path: polygon(31% 0, 69% 50%, 31% 100%, 0 100%, 38% 49%, 0 0); */
 }
 .clipped-element img {
   width: 100%;

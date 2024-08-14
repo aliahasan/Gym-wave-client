@@ -25,12 +25,9 @@ const AllSubscribers = () => {
     <>
       <Container>
         <div className="container mx-auto px-4 sm:px-8">
-          {/* <Helmet>
-    <title>Manage Users</title>
-  </Helmet> */}
           <div className="py-8">
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-              <div className="inline-block w-[50%] mx-auto shadow rounded-lg overflow-hidden">
+              <div className="inline-block w-full mx-auto shadow rounded-lg overflow-hidden">
                 <table className="min-w-full leading-normal">
                   <thead>
                     <tr>

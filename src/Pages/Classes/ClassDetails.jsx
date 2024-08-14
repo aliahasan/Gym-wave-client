@@ -23,7 +23,7 @@ const ClassDetails = () => {
   return (
     <div>
       <div>
-        <img src={classItem?.image} alt="" />
+        <img src={classItem?.image} alt="image" />
       </div>
     </div>
   );

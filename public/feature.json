@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "Body Building",
+    "image": "./images/muscles.png",
+    "description": "Intense strength training to sculpt muscles and achieve a powerful physique."
+  },
+  {
+    "id": "2",
+    "title": "Musculation",
+    "image": "./images/arm.png",
+    "description": "Targeted exercises for muscle mass enhancement and improved physical strength."
+  },
+  {
+    "id": "3",
+    "title": "Fitness Running",
+    "image": "./images/running.png",
+    "description": "Cardio-focused running sessions to boost endurance, stamina, and overall health."
+  },
+  {
+    "id": "4",
+    "title": "Weight Lifting",
+    "image": "./images/weightlifting.png",
+    "description": "Structured weight training to build muscle strength and enhance body composition."
+  },
+  {
+    "id": "5",
+    "title": "Classic Yoga",
+    "image": "./images/lotus.png",
+    "description": "Traditional yoga practices for flexibility, relaxation, and mental clarity."
+  },
+  {
+    "id": "6",
+    "title": "HIIT",
+    "image": "./images/exercises.png",
+    "description": "High-Intensity Interval Training to burn fat, build endurance, and improve cardiovascular fitness."
+  }
+]

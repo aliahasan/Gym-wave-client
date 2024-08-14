@@ -12,7 +12,6 @@ const Button = ({ text }) => {
         </div>
         <p className=" relative inline-block transition-all duration-300 border-b-2 border-transparent hover:border-black">
           <span className="">
-      
             <button className="text-black">{text}</button>{" "}
           </span>
         </p>
