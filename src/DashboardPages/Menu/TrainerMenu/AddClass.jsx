@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import AddClassForm from "./AddClassForm";
 import useAuth from "../../../Hooks/useAuth";
 import { imageUpload } from "../../../Api/utils/imagebb";
@@ -9,33 +9,37 @@ import { axiosSecure } from "../../../Hooks/useAxiosSecure";
 const AddClass = () => {
   const [classCategory, setClassCategory] = useState("");
   const [classType, setClassType] = useState("");
-  const { user, setLoading } = useAuth();
+  const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
   const handleChange = (event) => {
-    event.preventDefault()
-    setClassType(event.target.value);
-    setClassCategory(event.target.value);
+    const { name, value } = event.target;
+    if (name === "classType") {
+      setClassType(value);
+    } else if (name === "category") {
+      setClassCategory(value);
+    }
   };
 
-  const classMutation = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: async (classInfo) => {
       const { data } = await axiosSecure.post("/class", classInfo);
       return data;
     },
-    onSuccess: () => {
-      toast.success("Class added successfully");
-      setLoading(false);
-    },
     onError: (error) => {
-      console.error(error);
-      toast.error("Failed to add class");
-      setLoading(false);
+      console.error("Error adding article:", error);
+      toast.error("Failed to add article");
+      setIsSubmitting(false);
+    },
+    onSuccess: () => {
+      toast.success("Article added successfully");
+      setIsSubmitting(false);
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, description) => {
     e.preventDefault();
-    setLoading(true);
     const form = e.target;
     const name = form.name.value;
     const title = form.title.value;
@@ -43,9 +47,9 @@ const AddClass = () => {
     const image = form.image.files[0];
     const price = Number(form.price.value);
     const category = form.category.value;
-    const type = form.type.value;
+    const type = form.classType.value;
     const days = form.days.value;
-    const description = form.description.value;
+    setDescription(description);
     const author = {
       name: user?.displayName,
       email: user?.email,
@@ -54,11 +58,11 @@ const AddClass = () => {
 
     if (isNaN(price)) {
       toast.error("Price must be a valid number");
-      setLoading(false);
       return;
     }
 
     try {
+      setIsSubmitting(true);
       const image_url = await imageUpload(image);
       const classInfo = {
         name,
@@ -73,13 +77,14 @@ const AddClass = () => {
         author,
       };
       console.log(classInfo);
-      await classMutation.mutateAsync(classInfo);
+      await mutateAsync(classInfo);
+      form.reset();
+      setDescription("");
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to upload image");
-      setLoading(false);
+      toast.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
-    form.reset();
   };
 
   return (
@@ -87,10 +92,12 @@ const AddClass = () => {
       <AddClassForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        description={description}
+        setDescription={setDescription}
         classCategory={classCategory}
-        setClassCategory={setClassCategory}
         classType={classType}
-      ></AddClassForm>
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 };

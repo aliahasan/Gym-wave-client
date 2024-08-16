@@ -1,4 +1,4 @@
-import { axiosCommon } from "../Hooks/useAxiosCommon";
+import useAxiosCommon, { axiosCommon } from "../Hooks/useAxiosCommon";
 import { axiosSecure } from "../Hooks/useAxiosSecure";
 
 export const subscribers = async (info) => {
@@ -12,6 +12,11 @@ export const getSubscribers = async () => {
 
 export const postBlog = async (article) => {
   const { data } = await axiosSecure.post("articles/", article);
+  return data;
+};
+
+export const getAllPost = async () => {
+  const { data } = await axiosCommon.get("/articles");
   return data;
 };
 

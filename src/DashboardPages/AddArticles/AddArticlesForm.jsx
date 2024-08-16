@@ -1,9 +1,19 @@
 /* eslint-disable react/prop-types */
-import React from "react";
 import Container from "../../Components/Container/Container";
 import { PiSpinnerBold } from "react-icons/pi";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { modules } from "../../utils/Utilty";
+const AddArticlesForm = ({
+  handleSubmit,
+  description,
+  setDescription,
+  isSubmitting,
+}) => {
+  const handleDescription = (value) => {
+    setDescription(value);
+  };
 
-const AddArticlesForm = ({ handleSubmit, loading }) => {
   return (
     <Container>
       <div className="mt-20 w-10/12 mx-auto">
@@ -12,7 +22,7 @@ const AddArticlesForm = ({ handleSubmit, loading }) => {
             Share Your Thoughts
           </h3>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => handleSubmit(e, description)}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-1 md:gap-y-5">
             <div className="space-y-6">
               <div className="space-y-1 text-sm">
@@ -20,22 +30,22 @@ const AddArticlesForm = ({ handleSubmit, loading }) => {
                   Title
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
+                  className="w-full px-3 py-5 text-gray-700 shadow-sm border border-r-gray-200 focus:outline-rose-500"
                   type="text"
                   name="title"
                   id="title"
-                  placeholder="title of article"
+                  placeholder="Title of article"
                   required
                 />
               </div>
             </div>
             <div className="space-y-6">
               <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
+                <label htmlFor="image" className="block text-gray-500">
                   Choose Image
                 </label>
                 <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
+                  className="w-full px-3 py-4 text-gray-700 shadow-sm border border-r-gray-200 focus:outline-rose-500"
                   type="file"
                   name="image"
                   id="image"
@@ -44,57 +54,35 @@ const AddArticlesForm = ({ handleSubmit, loading }) => {
                 />
               </div>
             </div>
-
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Date
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="date"
-                  name="date"
-                  id="date"
-                  placeholder="Date"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Enter Youtube Video Link
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="url"
-                  name="video"
-                  id="video"
-                  placeholder="video url"
-                />
-              </div>
-            </div>
           </div>
-          <div className="space-y-1 text-sm">
+
+          <div className="space-y-1 text-sm my-10">
             <label htmlFor="description" className="block text-gray-600">
               Description
             </label>
 
-            <textarea
-              id="description"
-              className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 "
-              name="description"
-            ></textarea>
+            {/* ReactQuill Editor */}
+            <ReactQuill
+              modules={modules}
+              value={description}
+              onChange={handleDescription}
+              theme="snow"
+              className="rounded-md h-[50vh] "
+            />
           </div>
+
           <button
-            disabled={loading}
+            disabled={isSubmitting}
             type="submit"
             className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
           >
-            {loading ? (
-              <PiSpinnerBold className="animate-spin m-auto text-2xl" />
+            {isSubmitting ? (
+              <div className="flex items-center justify-center">
+                <PiSpinnerBold className="animate-spin  text-2xl" />
+                <p className="pl-3">Please wait....</p>
+              </div>
             ) : (
-              " Save & Continue"
+              "Save & Continue"
             )}
           </button>
         </form>

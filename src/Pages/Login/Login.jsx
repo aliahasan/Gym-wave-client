@@ -11,7 +11,6 @@ const Login = () => {
   const from = location?.state?.from || "/";
   const { signInWithGoogle, signIn, loading, resetPassword, setLoading, user } =
     useAuth();
-    console.log(user);
 
   const [email, setEmail] = useState("");
   const handleSubmit = async (e) => {

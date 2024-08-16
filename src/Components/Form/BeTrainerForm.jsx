@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import useAuth from "../../Hooks/useAuth";
 import Container from "../Container/Container";
@@ -5,39 +6,89 @@ import { PiSpinnerBold } from "react-icons/pi";
 import { imageUpload } from "../../Api/utils/imagebb";
 import { generateTimeSlots } from "../../Api/utils/timeSlot";
 import { beTrainer } from "../../Api/Api";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import useRole from "../../Hooks/useRole";
+import { modules } from "../../utils/Utilty";
+
+// Reusable Input Component
+const InputField = ({
+  label,
+  name,
+  type = "text",
+  value,
+  onChange,
+  readOnly = false,
+  required = true,
+  ...props
+}) => (
+  <div className="space-y-1 text-sm">
+    <label htmlFor={name} className="block text-gray-500">
+      {label}
+    </label>
+    <input
+      className="w-full px-3 py-5 text-gray-700 shadow-sm border border-r-gray-200 focus:outline-rose-500"
+      type={type}
+      name={name}
+      id={name}
+      value={value}
+      onChange={onChange}
+      readOnly={readOnly}
+      required={required}
+      {...props}
+    />
+  </div>
+);
+
+// Reusable Checkbox Component
+const CheckboxField = ({ label, value, onChange, checked = false }) => (
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      className="form-checkbox text-blue-600"
+      value={value}
+      onChange={onChange}
+      checked={checked}
+    />
+    <span className="ml-2">{label}</span>
+  </label>
+);
 
 const BeTrainerForm = () => {
-  const { loading, user, setLoading } = useAuth();
-  const { userId , role } = useRole();
-  console.log(userId);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const { userId, role } = useRole();
   const [skills, setSkills] = useState([]);
+  const [availableInWeek, setAvailableInWeek] = useState([]);
   const [start, setStart] = useState("");
-  const [weekDay, setWeekDay] = useState("");
   const [end, setEnd] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSkills = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setSkills([...skills, value]);
-    } else {
-      setSkills(skills.filter((skill) => skill !== value));
-    }
+    setSkills(
+      checked ? [...skills, value] : skills.filter((skill) => skill !== value)
+    );
   };
 
   const handleDay = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setWeekDay([...weekDay, value]);
-    } else {
-      setWeekDay(weekDay.filter((day) => day !== value));
-    }
+    setAvailableInWeek(
+      checked
+        ? [...availableInWeek, value]
+        : availableInWeek.filter((day) => day !== value)
+    );
+  };
+
+  const handleDescription = (value) => {
+    setDescription(value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
+
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
@@ -45,7 +96,6 @@ const BeTrainerForm = () => {
     const image = form.image.files[0];
     const availableInDay = generateTimeSlots(start, end);
     const experience = form.experience.value;
-    const description = form.description.value;
 
     try {
       const image_url = await imageUpload(image);
@@ -55,313 +105,145 @@ const BeTrainerForm = () => {
         age,
         image_url,
         skills,
-        weekDay,
+        availableInWeek,
         availableInDay,
         experience,
         description,
-        userId: userId,
-        role:role
+        userId,
+        role,
       };
       await beTrainer(trainerInfo);
+      toast.success("Successfully applied as a trainer!");
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
-      setLoading(false);
+    } finally {
+      setIsLoading(false);
     }
-    setLoading(false);
+
     form.reset();
   };
 
   return (
     <Container>
-      <div className="mt-20 w-10/12 lg:w-9/12 mx-auto">
+      <div className="mt-10 w-10/12 lg:w-9/12 mx-auto">
         <div className="text-center my-10 pb-2">
           <h3 className="text-3xl md:text-5xl underline underline-offset-[15px]">
             Be a Trainer
           </h3>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-1 md:gap-y-5">
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Name
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="your name"
-                  required
-                  readOnly
-                  defaultValue={user?.displayName}
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Email
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="email"
-                  name="email"
-                  id="email"
-                  defaultValue={user?.email}
-                  readOnly
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Age
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="number"
-                  name="age"
-                  id="age"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="title" className="block text-gray-500">
-                  Choose Image
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="file"
-                  name="image"
-                  id="image"
-                  accept="image/*"
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="slots" className="block text-gray-500">
-                  Available From
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="time"
-                  name="time"
-                  id="time"
-                  value={start}
-                  onChange={(e) => setStart(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="slots" className="block text-gray-500">
-                  Available To
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="time"
-                  name="time"
-                  id="time"
-                  value={end}
-                  onChange={(e) => setEnd(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="slots" className="block text-gray-500">
-                  Experiences
-                </label>
-                <input
-                  className="w-full px-4 py-3 text-gray-700 border border-rose-300  focus:outline-rose-500 rounded-md"
-                  type="text"
-                  name="experience"
-                  id="experience"
-                  required
-                />
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5">
+            <InputField
+              label="Name"
+              name="name"
+              readOnly
+              value={user?.displayName}
+            />
+            <InputField
+              label="Email"
+              name="email"
+              type="email"
+              readOnly
+              value={user?.email}
+            />
+            <InputField label="Age" name="age" type="number" />
+            <InputField
+              label="Choose Image"
+              name="image"
+              type="file"
+              accept="image/*"
+            />
+            <InputField
+              label="Available From"
+              name="time"
+              type="time"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+            />
+            <InputField
+              label="Available To"
+              name="time"
+              type="time"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+            />
+            <InputField label="Experiences" name="experience" />
           </div>
           <div className="space-y-1 text-sm w-full py-4">
-            <label htmlFor="description" className="block text-gray-600">
+            <label htmlFor="skills" className="block text-gray-600">
               Select your skill
             </label>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between  px-4 py-3 text-gray-700 border border-rose-300 gap-y-3 focus:outline-rose-500 rounded-md my-10">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Strength training"
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-y-3 px-4 py-4 text-gray-700 border border-gray-200 my-10 shadow-sm">
+              {[
+                "Strength training",
+                "Cardio",
+                "Yoga",
+                "Nutrition",
+                "Personal training",
+                "Group training",
+              ].map((skill) => (
+                <CheckboxField
+                  key={skill}
+                  label={skill}
+                  value={skill}
                   onChange={handleSkills}
+                  checked={skills.includes(skill)}
                 />
-                <span className="ml-2">Strength Training</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Cardio"
-                  onChange={handleSkills}
-                />
-                <span className="ml-2">Cardio</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Yoga"
-                  onChange={handleSkills}
-                />
-                <span className="ml-2">Yoga</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Nutrition"
-                  onChange={handleSkills}
-                />
-                <span className="ml-2">Nutrition</span>
-              </label>
-
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Personal training"
-                  onChange={handleSkills}
-                />
-                <span className="ml-2">Personal Training</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="skills"
-                  value="Group training"
-                  onChange={handleSkills}
-                />
-                <span className="ml-2">Group Training</span>
-              </label>
+              ))}
             </div>
           </div>
           <div>
-            <label htmlFor="description" className="block text-gray-600">
+            <label htmlFor="availableInWeek" className="block text-gray-600">
               Availability in week
             </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-between  px-4 py-3 text-gray-700 border border-rose-300 gap-y-3 focus:outline-rose-500 rounded-md my-2">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Saturday"
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-y-3 px-4 py-3 text-gray-700 border border-gray-200 my-2 shadow-sm">
+              {[
+                "Saturday",
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+              ].map((day) => (
+                <CheckboxField
+                  key={day}
+                  label={day}
+                  value={day}
                   onChange={handleDay}
+                  checked={availableInWeek.includes(day)}
                 />
-                <span className="ml-2">Saturday</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Sunday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Sunday</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Monday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Monday</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Tuesday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Tuesday</span>
-              </label>
-
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Wednesday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Wednesday</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Thursday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Thursday</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox text-blue-600"
-                  name="weekDay"
-                  value="Friday"
-                  onChange={handleDay}
-                />
-                <span className="ml-2">Friday</span>
-              </label>
+              ))}
             </div>
           </div>
           <div className="space-y-1 text-sm">
             <label htmlFor="description" className="block text-gray-600">
               Description
             </label>
-
-            <textarea
-              id="description"
-              className="block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 "
-              name="description"
-              required
-            ></textarea>
+            <ReactQuill
+              modules={modules}
+              value={description}
+              onChange={handleDescription}
+              theme="snow"
+              className="rounded-md h-[40vh] "
+            />
           </div>
+        </form>
+
+        {/* Button outside form */}
+        <div className="mt-5 text-center">
           <button
-            disabled={loading}
-            type="submit"
-            className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
+            disabled={isLoading}
+            onClick={handleSubmit}
+            className="w-full p-3 mt-20 md:mt-12  text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500 hover:bg-rose-600"
           >
-            {loading ? (
+            {isLoading ? (
               <PiSpinnerBold className="animate-spin m-auto text-2xl" />
             ) : (
-              " Apply"
+              "Apply"
             )}
           </button>
-        </form>
+        </div>
       </div>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useRole from "../../Hooks/useRole";
 import useAuth from "../../Hooks/useAuth";
 import AddArticlesForm from "./AddArticlesForm";
@@ -8,8 +8,10 @@ import { axiosSecure } from "../../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 
 const AddArticles = () => {
-  const {role} = useRole();
-  const { user, loading, setLoading } = useAuth();
+  const { role } = useRole();
+  const { user } = useAuth();
+  const [description, setDescription] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { mutateAsync } = useMutation({
     mutationFn: async (article) => {
@@ -17,53 +19,56 @@ const AddArticles = () => {
       return data;
     },
     onError: (error) => {
-      console.error("Error adding article:", error);
-      toast.error("Failed to add article");
-      setLoading(false);
+      toast.error("Failed to add article" , error);
+      setIsSubmitting(false); 
     },
     onSuccess: () => {
       toast.success("Article added successfully");
-      setLoading(false);
+      setIsSubmitting(false); // Stop loading on success
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, description) => {
     e.preventDefault();
-    setLoading(true);
     const form = e.target;
     const title = form.title.value;
     const image = form.image.files[0];
-    const video = form.video.value;
-    const description = form.description.value;
-    const date = form.date.value;
+    setIsSubmitting(true); // Start loading
     const author = {
-      authorType: role,
       name: user?.displayName,
       email: user?.email,
       photo: user?.photoURL,
+      authorRole: role,
     };
+
     try {
+      // Upload the image
       const image_url = await imageUpload(image);
       const article = {
         title,
-        video,
-        date,
-        description,
         image: image_url,
+        content: description,
         author,
+        date: new Date(),
       };
+      // Send the article data to the backend
       await mutateAsync(article);
       form.reset();
+      setDescription("");
     } catch (error) {
-      console.error("Error uploading image:", error);
       toast.error("Failed to upload image");
+      setIsSubmitting(false);
     }
-    setLoading(false);
   };
 
   return (
     <div>
-      <AddArticlesForm handleSubmit={handleSubmit} loading={loading} />
+      <AddArticlesForm
+        handleSubmit={handleSubmit}
+        description={description}
+        setDescription={setDescription}
+        isSubmitting={isSubmitting} 
+      />
     </div>
   );
 };

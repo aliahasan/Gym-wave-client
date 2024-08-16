@@ -1,9 +1,11 @@
-import React from "react";
-import useRole from "../../../Hooks/useRole";
+import React from 'react';
 
 const Blogs = () => {
-  const {role} = useRole();
-  return <div></div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default Blogs;
