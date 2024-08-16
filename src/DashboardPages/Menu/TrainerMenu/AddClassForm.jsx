@@ -3,7 +3,7 @@ import { PiSpinnerBold } from "react-icons/pi";
 import Container from "../../../Components/Container/Container";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; 
-import { modules } from "../../../utils/Utilty";
+import { modules } from "../../../Api/utils/minicode";
 
 // Reusable Input Field Component
 const InputField = ({ label, name, type = "text", placeholder, required = true }) => (

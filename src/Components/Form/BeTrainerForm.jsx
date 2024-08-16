@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import useRole from "../../Hooks/useRole";
-import { modules } from "../../utils/Utilty";
+import { modules } from "../../Api/utils/minicode";
 
 // Reusable Input Component
 const InputField = ({
