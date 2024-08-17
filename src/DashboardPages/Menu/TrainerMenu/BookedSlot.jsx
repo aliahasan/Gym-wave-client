@@ -35,8 +35,8 @@ const BookedSlot = () => {
                         {item?.buyerInfo?.buyerName}
                       </h2>
                       <p className="text-xl">{item?.buyerInfo?.buyerEmail}</p>
-                      <div >
-                       <h1 className="text-xl">Booked Slot : {item?.slot}</h1>
+                      <div>
+                        <h1 className="text-xl">Booked Slot : {item?.slot}</h1>
                       </div>
                     </div>
                   </div>

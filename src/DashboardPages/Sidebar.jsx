@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useAuth from "../Hooks/useAuth";
 import { Link } from "react-router-dom";
 import { AiOutlineBars } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
@@ -10,7 +9,6 @@ import UserMenu from "./Menu/UserMenu/UserMenu";
 import useRole from "../Hooks/useRole";
 
 const Sidebar = () => {
-  const { logout, user } = useAuth();
   const { role } = useRole();
   const [isActive, setIsActive] = useState(false);
 

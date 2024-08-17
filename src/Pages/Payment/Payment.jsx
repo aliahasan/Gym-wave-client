@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { BookingContext } from "../../Provider/BookingProvider/BookingProvider";
 import useAuth from "../../Hooks/useAuth";
 import Loading from "../../Shared/Loading/Loading";
@@ -7,13 +7,25 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckOutForm from "./CheckOutForm/CheckOutForm";
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
+
 const Payment = () => {
   const { loading } = useAuth();
   const { bookingData } = useContext(BookingContext);
-  console.log(bookingData);
+
   if (loading) {
-    return <Loading></Loading>;
+    return <Loading />;
   }
+
+  if (!bookingData) {
+    return (
+      <Container>
+        <div className="text-center my-10">
+          <h1 className="text-4xl">No Booking Data Found</h1>
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <div>
       <Container>
@@ -22,13 +34,13 @@ const Payment = () => {
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center gap-3 lg:mt-20">
           <div className="md:w-1/2 text-2xl">
-            <p>Your booking slot : {bookingData?.slot}</p>
-            <p className="">Package type : {bookingData?.packageName}</p>
-            <p>price : {bookingData?.price}</p>
+            <p>Your booking slot: {bookingData.slot}</p>
+            <p>Package type: {bookingData.packageName}</p>
+            <p>Price: {bookingData.price}</p>
           </div>
-          <div className="md:w-1/2 mx-auto">
-            <Elements stripe={stripePromise}>
-              <CheckOutForm bookingData={bookingData}></CheckOutForm>
+          <div className="md:w-1/2 mx-auto ">
+            <Elements stripe={stripePromise} >
+              <CheckOutForm bookingData={bookingData} />
             </Elements>
           </div>
         </div>

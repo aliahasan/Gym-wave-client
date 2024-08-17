@@ -221,6 +221,7 @@ const BeTrainerForm = () => {
               Description
             </label>
             <ReactQuill
+             placeholder="Write something from here"
               modules={modules}
               value={description}
               onChange={handleDescription}

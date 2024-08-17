@@ -23,7 +23,9 @@ const ManageSlots = () => {
     <div className="mt-10">
       <div>
         <div>
-          <h1 className="text-4xl text-center text-green-500 underline-offset-8 underline">My Slots</h1>
+          <h1 className="text-4xl text-center text-green-500 underline-offset-8 underline">
+            My Slots
+          </h1>
         </div>
         <Container>
           <div>
@@ -40,7 +42,7 @@ const ManageSlots = () => {
           </div>
         </Container>
         <div>
-            <BookedSlot></BookedSlot>
+          <BookedSlot></BookedSlot>
         </div>
       </div>
     </div>

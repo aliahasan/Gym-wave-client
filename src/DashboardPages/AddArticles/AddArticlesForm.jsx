@@ -63,6 +63,7 @@ const AddArticlesForm = ({
 
             {/* ReactQuill Editor */}
             <ReactQuill
+             placeholder="Write something from here"
               modules={modules}
               value={description}
               onChange={handleDescription}

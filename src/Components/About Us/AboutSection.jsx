@@ -43,9 +43,12 @@ const AboutSection = () => {
                 alt="Mission"
                 className="w-[380px]"
               />
-              <h1 className="text-3xl text-center font-bold text-yellow-400">Mission</h1>
+              <h1 className="text-3xl text-center font-bold text-yellow-400">
+                Mission
+              </h1>
               <p className="text-justify leading-6 lg:px-10 text-black mt-4">
-                Our main focus at GymWave Fitness is functional training, emphasizing mobility, strength, and conditioning.
+                Our main focus at GymWave Fitness is functional training,
+                emphasizing mobility, strength, and conditioning.
               </p>
             </div>
           </div>
@@ -58,9 +61,12 @@ const AboutSection = () => {
                 alt="Story"
                 className="w-[380px]"
               />
-              <h1 className="text-3xl text-center font-bold text-pink-500">Story</h1>
+              <h1 className="text-3xl text-center font-bold text-pink-500">
+                Story
+              </h1>
               <p className="text-justify leading-6 lg:px-10 text-black mt-4">
-                We provide personalized health and fitness services to help individuals achieve their desired goals.
+                We provide personalized health and fitness services to help
+                individuals achieve their desired goals.
               </p>
             </div>
           </div>
@@ -82,17 +88,17 @@ const AboutSection = () => {
           {/* Approach Section */}
           <div>
             <div className="flex flex-col items-center">
-              <img
-                src="/gymapproch.jpg"
-                alt="Approach"
-                className="w-[393px]"
-              />
-              <h1 className="text-3xl text-center font-bold text-indigo-400">APPROACH</h1>
+              <img src="/gymapproch.jpg" alt="Approach" className="w-[393px]" />
+              <h1 className="text-3xl text-center font-bold text-indigo-400">
+                APPROACH
+              </h1>
               <p className="text-xl font-semibold py-1 text-pink-400 text-nowrap">
                 INNOVATION + MOTIVATION = RESULTS
               </p>
               <p className="text-justify leading-6 text-black mt-4 w-5/6 mx-auto">
-                We offer a hybrid gym with state-of-the-art facilities and knowledgeable staff, including personal training and group classes.
+                We offer a hybrid gym with state-of-the-art facilities and
+                knowledgeable staff, including personal training and group
+                classes.
               </p>
               <div className="my-4">
                 <Button text="More about us" />

@@ -22,14 +22,14 @@ const TrainerDetails = () => {
 
   if (error) return <div>Error: {error.message}</div>;
 
-  const handleSlotClick = (slot) => {
+  const handleSlotBooking = (slot) => {
     setBookingData({
       slot,
-      sellerInfo: {
+      trainer: {
         trainerId: id,
-        trainerName: data.name,
-        trainerImage: data?.image_url,
-        trainerEmail: data?.email,
+        name: data.name,
+        image: data?.image_url,
+        email: data?.email,
       },
     });
     navigate("/trainers/booking");
@@ -42,33 +42,33 @@ const TrainerDetails = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col items-center">
               <img
-                src={data.image_url}
-                alt={data.name}
+                src={data?.image_url}
+                alt={data?.name}
                 className="w-full h-auto rounded-lg"
               />
               <div className="text-justify my-6">
                 <p className="text-lg leading-relaxed">
-                  Description: {data.description}
+                  Description: {data?.description}
                 </p>
               </div>
             </div>
             <div>
               <div className="bg-gray-100 p-6 rounded-lg shadow-md">
                 <div className="text-center mb-4">
-                  <p className="text-3xl font-bold">{data.name}</p>
+                  <p className="text-3xl font-bold">{data?.name}</p>
                 </div>
                 <p className="text-xl mb-2">
-                  <strong>Skills:</strong> {data.skills.join(", ")}
+                  <strong>Skills:</strong> {data?.skills.join(", ")}
                 </p>
                 <p className="text-xl mb-4">
-                  <strong>Experience:</strong> {data.experience}
+                  <strong>Experience:</strong> {data?.experience}
                 </p>
                 <p className="text-lg font-semibold">Available Time Slots:</p>
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                  {data?.availableInDay.map((slot, index) => (
+                  {data?.availableInDay?.map((slot, index) => (
                     <button
                       key={index}
-                      onClick={() => handleSlotClick(slot)}
+                      onClick={() => handleSlotBooking(slot)}
                       className="px-4 py-2 bg-gray-300 rounded-md text-center cursor-pointer hover:bg-gray-400 transition-colors"
                     >
                       {slot}
