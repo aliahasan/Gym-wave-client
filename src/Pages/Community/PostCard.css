@@ -1,0 +1,19 @@
+.post-content li {
+  font-size: 14px;
+  margin-left: 40px;
+  list-style-type: disc;
+  padding: 5px 0;
+}
+.post-content,
+h1,
+h3 {
+  font-size: 14px;
+}
+.post-content p,
+h2 {
+  font-size: 18px;
+  padding: 5px 0;
+}
+.post-content p {
+  font-size: 14px;
+}

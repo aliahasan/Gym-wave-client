@@ -94,7 +94,7 @@ const BeTrainerForm = () => {
     const email = form.email.value;
     const age = form.age.value;
     const image = form.image.files[0];
-    const availableInDay = generateTimeSlots(start, end);
+    const availableSlots = generateTimeSlots(start, end);
     const experience = form.experience.value;
 
     try {
@@ -106,7 +106,7 @@ const BeTrainerForm = () => {
         image_url,
         skills,
         availableInWeek,
-        availableInDay,
+        availableSlots,
         experience,
         description,
         userId,
@@ -167,7 +167,7 @@ const BeTrainerForm = () => {
               value={end}
               onChange={(e) => setEnd(e.target.value)}
             />
-            <InputField label="Experiences" name="experience" />
+            <InputField label="Experiences" type="number" name="experience" placeholder="type years of experience"  />
           </div>
           <div className="space-y-1 text-sm w-full py-4">
             <label htmlFor="skills" className="block text-gray-600">

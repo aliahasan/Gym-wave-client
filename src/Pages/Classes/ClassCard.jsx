@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ClassCard = ({ classItem }) => {
+  console.log(classItem)
   return (
     <div className="card bg-base-100 shadow-md rounded-sm overflow-hidden flex flex-col h-full">
       <Link to={`/classes/${classItem._id}`} className="block w-full p-4">
@@ -20,7 +21,9 @@ const ClassCard = ({ classItem }) => {
           <p className="text-sm text-gray-600 mb-4">{classItem?.title}</p>
           <div className="flex justify-between items-center text-gray-700 mb-4">
             <p className="text-md font-medium">Price: ${classItem?.price}</p>
-            <p className="text-md font-medium">Duration: {classItem?.duration} min</p>
+            <p className="text-md font-medium">
+              Duration: {classItem?.duration} min
+            </p>
           </div>
         </div>
       </Link>
