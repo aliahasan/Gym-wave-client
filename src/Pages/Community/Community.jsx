@@ -19,8 +19,8 @@ const Community = () => {
   if (error) return <div>Error loading articles: {error.message}</div>;
 
   return (
-    <div className="bg-gray-100 min-h-screen py-2 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="bg-gray-100  min-h-screen px-4">
+      <div className="max-w-4xl mx-auto">
         {articles.map((article) => (
           <PostCard key={article.id} article={article} />
         ))}

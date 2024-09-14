@@ -2,8 +2,8 @@
 import Container from "../../Components/Container/Container";
 import { PiSpinnerBold } from "react-icons/pi";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { modules } from "../../Api/utils/minicode";
+import 'react-quill/dist/quill.snow.css';
 const AddArticlesForm = ({
   handleSubmit,
   description,

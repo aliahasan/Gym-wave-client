@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { FaThumbsUp } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaThumbsUp } from "react-icons/fa";
 import DOMPurify from "dompurify";
-import useAuth from '../../Hooks/useAuth';
+import useAuth from "../../Hooks/useAuth";
 import "./PostCard.css";
 
 const PostCard = ({ article }) => {
   const [likeCount, setLikeCount] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showFullContent, setShowFullContent] = useState(false); // New state for content toggle
   const { user } = useAuth();
@@ -19,14 +19,14 @@ const PostCard = ({ article }) => {
     } else {
       setLikeCount((prev) => prev + 1);
     }
-    setHasLiked(!hasLiked);  
+    setHasLiked(!hasLiked);
   };
 
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (comment.trim()) {
       setComments([...comments, comment]);
-      setComment('');
+      setComment("");
     }
   };
 
@@ -41,7 +41,7 @@ const PostCard = ({ article }) => {
     : article.content.substring(0, 350);
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+    <div className="bg-white shadow  p-6 mb-6">
       <div className="flex items-center mb-4">
         <img
           src={article?.author?.photo}
@@ -55,7 +55,9 @@ const PostCard = ({ article }) => {
           </p>
         </div>
       </div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-2">{article?.title}</h2>
+      <h2 className="text-xl font-semibold text-gray-800 mb-2">
+        {article?.title}
+      </h2>
       {article?.image && (
         <img
           src={article?.image}
@@ -65,7 +67,7 @@ const PostCard = ({ article }) => {
       )}
       <div>
         <p
-          className='post-content'
+          className="post-content"
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(displayedContent),
           }}
@@ -75,7 +77,7 @@ const PostCard = ({ article }) => {
             onClick={toggleContent}
             className="text-indigo-600 hover:underline mt-2"
           >
-            {showFullContent ? 'See less' : 'See more...'}
+            {showFullContent ? "See less" : "See more..."}
           </button>
         )}
       </div>
@@ -83,11 +85,12 @@ const PostCard = ({ article }) => {
         <button
           onClick={handleLike}
           className={`flex items-center ${
-            hasLiked ? 'text-blue-600' : 'text-gray-600'
+            hasLiked ? "text-blue-600" : "text-gray-600"
           } hover:text-indigo-800`}
         >
           <FaThumbsUp className="mr-2" />
-          {hasLiked ? 'Liked' : 'Like'} {likeCount > 0 && <span>({likeCount})</span>}
+          {hasLiked ? "Liked" : "Like"}{" "}
+          {likeCount > 0 && <span>({likeCount})</span>}
         </button>
       </div>
       <form onSubmit={handleCommentSubmit} className="mt-4">

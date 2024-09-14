@@ -7,7 +7,7 @@ import { imageUpload } from "../../Api/utils/imagebb";
 import { generateTimeSlots } from "../../Api/utils/timeSlot";
 import { beTrainer } from "../../Api/Api";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import 'react-quill/dist/quill.snow.css';
 import toast from "react-hot-toast";
 import useRole from "../../Hooks/useRole";
 import { modules } from "../../Api/utils/minicode";
@@ -167,7 +167,12 @@ const BeTrainerForm = () => {
               value={end}
               onChange={(e) => setEnd(e.target.value)}
             />
-            <InputField label="Experiences" type="number" name="experience" placeholder="type years of experience"  />
+            <InputField
+              label="Experiences"
+              type="number"
+              name="experience"
+              placeholder="type years of experience"
+            />
           </div>
           <div className="space-y-1 text-sm w-full py-4">
             <label htmlFor="skills" className="block text-gray-600">
@@ -221,7 +226,7 @@ const BeTrainerForm = () => {
               Description
             </label>
             <ReactQuill
-             placeholder="Write something from here"
+              placeholder="Write something from here"
               modules={modules}
               value={description}
               onChange={handleDescription}

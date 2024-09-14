@@ -95,7 +95,7 @@ const CheckOutForm = ({ bookingData }) => {
           text: "Your booking is successful!",
           icon: "success",
         });
-        navigate("/");
+        navigate("/dashboard");
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -107,7 +107,7 @@ const CheckOutForm = ({ bookingData }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full  max-w-lg mx-auto p-4 shadow-lg rounded-md bg-white"
+      className="w-full max-w-lg mx-auto p-4 shadow-lg rounded-md bg-white"
     >
       <div className="flex flex-col space-y-4">
         <>
@@ -122,7 +122,7 @@ const CheckOutForm = ({ bookingData }) => {
                       "::placeholder": { color: "#aab7c4" },
                     },
                     invalid: { color: "#9e2146" },
-                  }
+                  },
                 }}
               />
             </div>
