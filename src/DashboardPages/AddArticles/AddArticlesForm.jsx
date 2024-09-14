@@ -1,19 +1,16 @@
 /* eslint-disable react/prop-types */
 import Container from "../../Components/Container/Container";
 import { PiSpinnerBold } from "react-icons/pi";
-import ReactQuill from "react-quill";
-import { modules } from "../../Api/utils/minicode";
-import 'react-quill/dist/quill.snow.css';
+import TextEditor from "../../Components/TextEditor/TextEditor";
 const AddArticlesForm = ({
   handleSubmit,
   description,
   setDescription,
   isSubmitting,
 }) => {
-  const handleDescription = (value) => {
-    setDescription(value);
+  const handleDescription = (content) => {
+    setDescription(content);
   };
-
   return (
     <Container>
       <div className="mt-20 w-10/12 mx-auto">
@@ -60,22 +57,13 @@ const AddArticlesForm = ({
             <label htmlFor="description" className="block text-gray-600">
               Description
             </label>
-
-            {/* ReactQuill Editor */}
-            <ReactQuill
-             placeholder="Write something from here"
-              modules={modules}
-              value={description}
-              onChange={handleDescription}
-              theme="snow"
-              className="rounded-md h-[50vh] "
-            />
+            <TextEditor handleDescription={handleDescription}></TextEditor>
           </div>
 
           <button
             disabled={isSubmitting}
             type="submit"
-            className="w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
+            className="w-full p-3 mt-2 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500"
           >
             {isSubmitting ? (
               <div className="flex items-center justify-center">

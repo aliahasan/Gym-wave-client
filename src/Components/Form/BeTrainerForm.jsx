@@ -6,17 +6,16 @@ import { PiSpinnerBold } from "react-icons/pi";
 import { imageUpload } from "../../Api/utils/imagebb";
 import { generateTimeSlots } from "../../Api/utils/timeSlot";
 import { beTrainer } from "../../Api/Api";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import useRole from "../../Hooks/useRole";
-import { modules } from "../../Api/utils/minicode";
+import TextEditor from "../TextEditor/TextEditor";
 
 // Reusable Input Component
 const InputField = ({
   label,
   name,
-  type = "text",
+  type = "text" || "number" || "file" ||"checkbox",
   value,
   onChange,
   readOnly = false,
@@ -81,24 +80,29 @@ const BeTrainerForm = () => {
     );
   };
 
-  const handleDescription = (value) => {
-    setDescription(value);
+  const handleDescription = (content) => {
+    setDescription(content);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const age = form.age.value;
-    const image = form.image.files[0];
+    // Use FormData to handle file inputs and form data
+    const formData = new FormData(e.target);
+    
+    const name = user?.displayName;
+    const email = user?.email;
+    const age = formData.get("age") || "not given";
+    const image = formData.get("image"); // File input
     const availableSlots = generateTimeSlots(start, end);
-    const experience = form.experience.value;
+    const experience = formData.get("experience");
 
     try {
-      const image_url = await imageUpload(image);
+      let image_url = "";
+      if (image) {
+        image_url = await imageUpload(image);
+      }
       const trainerInfo = {
         name,
         email,
@@ -113,6 +117,7 @@ const BeTrainerForm = () => {
         role,
       };
       await beTrainer(trainerInfo);
+      console.log(trainerInfo);
       toast.success("Successfully applied as a trainer!");
     } catch (error) {
       toast.error(error.message);
@@ -120,7 +125,7 @@ const BeTrainerForm = () => {
       setIsLoading(false);
     }
 
-    form.reset();
+    e.target.reset(); // Reset the form
   };
 
   return (
@@ -155,14 +160,14 @@ const BeTrainerForm = () => {
             />
             <InputField
               label="Available From"
-              name="time"
+              name="start"
               type="time"
               value={start}
               onChange={(e) => setStart(e.target.value)}
             />
             <InputField
               label="Available To"
-              name="time"
+              name="end"
               type="time"
               value={end}
               onChange={(e) => setEnd(e.target.value)}
@@ -225,31 +230,22 @@ const BeTrainerForm = () => {
             <label htmlFor="description" className="block text-gray-600">
               Description
             </label>
-            <ReactQuill
-              placeholder="Write something from here"
-              modules={modules}
-              value={description}
-              onChange={handleDescription}
-              theme="snow"
-              className="rounded-md h-[40vh] "
-            />
+            <TextEditor handleDescription={handleDescription}></TextEditor>
+          </div>
+          <div className="mt-5 text-center">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full p-3 mt-20 md:mt-12 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500 hover:bg-rose-600"
+            >
+              {isLoading ? (
+                <PiSpinnerBold className="animate-spin m-auto text-2xl" />
+              ) : (
+                "Apply"
+              )}
+            </button>
           </div>
         </form>
-
-        {/* Button outside form */}
-        <div className="mt-5 text-center">
-          <button
-            disabled={isLoading}
-            onClick={handleSubmit}
-            className="w-full p-3 mt-20 md:mt-12  text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500 hover:bg-rose-600"
-          >
-            {isLoading ? (
-              <PiSpinnerBold className="animate-spin m-auto text-2xl" />
-            ) : (
-              "Apply"
-            )}
-          </button>
-        </div>
       </div>
     </Container>
   );

@@ -14,7 +14,6 @@ const useRole = () => {
       return data;
     },
   });
-
   const role = userData?.role;
   const userId = userData?._id;
 

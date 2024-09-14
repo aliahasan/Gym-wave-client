@@ -19,8 +19,8 @@ const AddArticles = () => {
       return data;
     },
     onError: (error) => {
-      toast.error("Failed to add article" , error);
-      setIsSubmitting(false); 
+      toast.error("Failed to add article", error);
+      setIsSubmitting(false);
     },
     onSuccess: () => {
       toast.success("Article added successfully");
@@ -51,6 +51,7 @@ const AddArticles = () => {
         author,
         date: new Date(),
       };
+      console.log(article);
       // Send the article data to the backend
       await mutateAsync(article);
       form.reset();
@@ -67,7 +68,7 @@ const AddArticles = () => {
         handleSubmit={handleSubmit}
         description={description}
         setDescription={setDescription}
-        isSubmitting={isSubmitting} 
+        isSubmitting={isSubmitting}
       />
     </div>
   );

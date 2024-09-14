@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { PiSpinnerBold } from "react-icons/pi";
 import Container from "../../../Components/Container/Container";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
-import { modules } from "../../../Api/utils/minicode";
+import "quill/dist/quill.core.css";
+import TextEditor from "../../../Components/TextEditor/TextEditor";
 
 // Reusable Input Field Component
 const InputField = ({ label, name, type = "text", placeholder, required = true }) => (
@@ -75,8 +74,8 @@ const AddClassForm = ({
   isSubmitting,
 }) => {
   // Handle Quill editor changes
-  const handleDescription = (value) => {
-    setDescription(value);
+  const handleDescription = (content) => {
+    setDescription(content);
   };
 
   return (
@@ -123,16 +122,7 @@ const AddClassForm = ({
             <label htmlFor="description" className="block text-gray-600">
               Description
             </label>
-
-            {/* ReactQuill Editor */}
-            <ReactQuill
-            placeholder="Write something from here"
-              modules={modules}
-              value={description}
-              onChange={handleDescription}
-              theme="snow"
-              className="rounded-md h-64 "
-            />
+            <TextEditor handleDescription={handleDescription}></TextEditor>
           </div>
           <button
             disabled={isSubmitting}
